@@ -226,10 +226,41 @@ Setting tambahan untuk maintenance secara periodik, misalnya:
 - hapus direktori sampah tiap hari
 - dll
 
-
 ## Otomatisasi (opsional)
 
 Skrip shell untuk otomatisasi instalasi, konfigurasi, dan maintenance.
+
+**1. Instalasi Docker atau Melakukan Pengecekan Instalasi Docker**
+
+```
+if ! command -v docker &> /dev/null
+then
+    echo "Docker belum terinstal."
+    sudo apt update
+    sudo apt install -y docker.io docker-compose
+    sudo usermod -aG docker $(whoami)
+    echo "Keluar dan masuk kembali ke SSH agar 'docker' aktif!"
+else
+    echo "Docker dan Docker Compose sudah terinstal."
+fi
+
+mkdir -p $HOST_DIR
+cd $HOST_DIR
+```
+
+**2. Konfigurasi**
+
+Konfigurasi dapat dilakukan dengan kode sebelumnya, pada sub bab "konfigurasi". 
+
+**3. Membersihkan kontainer, volume, dan jaringan docker yang tidak digunakan**
+```
+docker system prune -a -v -f
+```
+
+**4. Membersihkan images docker yang tidak digunakan**
+```
+docker image prune -a -f
+```
 
 
 ## Cara Pemakaian
